@@ -7,16 +7,26 @@ import javax.persistence.Id;
 
 @Entity
 public class Usuario {
-	
+
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private Integer id;
-	
+
 	private String nome;
-	
+
 	private String email;
-	
+
 	private String senha;
+
+	public Usuario() {
+		super();
+	}
+
+	public Usuario(String nome, String email, String senha) {
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+	}
 
 	public Integer getId() {
 		return id;
@@ -74,7 +84,5 @@ public class Usuario {
 			return false;
 		return true;
 	}
-	
-	
 
 }
