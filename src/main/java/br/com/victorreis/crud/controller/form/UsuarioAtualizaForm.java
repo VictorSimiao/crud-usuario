@@ -4,15 +4,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import br.com.victorreis.crud.model.Usuario;
+import br.com.victorreis.crud.repository.UsuarioRepository;
 
-public class UsuarioForm {
+public class UsuarioAtualizaForm {
+
 	@NotBlank(message = "Informe o nome")
 	private String nome;
 	@Email(message = "Informe um e-mail válido")
 	private String email;
-	
-	@NotBlank(message = "Informe a senha")
-	private String senha;
 
 	public String getNome() {
 		return nome;
@@ -30,16 +29,11 @@ public class UsuarioForm {
 		this.email = email;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public Usuario converter() {
-		return new Usuario(nome, email, senha);
+	public Usuario atualizar(Integer id, UsuarioRepository usuarioRepository) {
+		Usuario usuario = usuarioRepository.getOne(id);
+		usuario.setNome(this.nome);
+		usuario.setEmail(email);
+		return usuario;
 	}
 
 }

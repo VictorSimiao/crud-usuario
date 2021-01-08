@@ -8,15 +8,18 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.victorreis.crud.controller.dto.UsuarioDto;
+import br.com.victorreis.crud.controller.form.UsuarioAtualizaForm;
 import br.com.victorreis.crud.controller.form.UsuarioForm;
 import br.com.victorreis.crud.model.Usuario;
 import br.com.victorreis.crud.repository.UsuarioRepository;
@@ -39,6 +42,7 @@ public class UsuarioController {
 	}
 
 	@PostMapping
+	@Transactional
 	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid UsuarioForm usuarioForm,
 			UriComponentsBuilder uriBuilder) {
 		Usuario usuario = usuarioForm.converter();
@@ -54,6 +58,18 @@ public class UsuarioController {
 			return ResponseEntity.ok().body(new UsuarioDto(optional.get()));
 		}
 		return ResponseEntity.notFound().build();
+	}
+	
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<UsuarioDto> atualizar(@PathVariable Integer id, @RequestBody UsuarioAtualizaForm form  ){
+		Optional<Usuario> optional = usuarioRepository.findById(id);
+		if(optional.isPresent()) {
+			Usuario usuario = form.atualizar(id, usuarioRepository);
+			return ResponseEntity.ok().body(new UsuarioDto(usuario));
+		}
+		return ResponseEntity.notFound().build();
+				
 	}
 
 }
