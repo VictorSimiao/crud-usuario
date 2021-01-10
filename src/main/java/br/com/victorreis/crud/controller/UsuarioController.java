@@ -78,7 +78,7 @@ public class UsuarioController {
 		Optional<Usuario> optional = usuarioRepository.findById(id);
 		if(optional.isPresent()) {
 			usuarioRepository.deleteById(id);
-			return ResponseEntity.ok().build();
+			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.notFound().build();
 	}
