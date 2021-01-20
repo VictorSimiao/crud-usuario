@@ -1,12 +1,15 @@
 package br.com.victorreis.crud.controller;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,12 +35,12 @@ public class UsuarioController {
 	private UsuarioRepository usuarioRepository;
 
 	@GetMapping
-	public ResponseEntity<List<UsuarioDto>> lista(String nomeUsuario) {
+	public ResponseEntity<Page<UsuarioDto>> lista(String nomeUsuario, @PageableDefault(sort="nome",direction = Direction.ASC,size = 10) Pageable paginacao) {
 		if (nomeUsuario == null) {
-			List<Usuario> usuarios = usuarioRepository.findAll();
+			Page<Usuario> usuarios = usuarioRepository.findAll(paginacao);
 			return ResponseEntity.ok(UsuarioDto.converter(usuarios));
 		} else {
-			List<Usuario> usuarios = usuarioRepository.findByNome(nomeUsuario);
+			Page<Usuario> usuarios = usuarioRepository.findByNome(nomeUsuario,paginacao);
 			return ResponseEntity.ok(UsuarioDto.converter(usuarios));
 		}
 	}

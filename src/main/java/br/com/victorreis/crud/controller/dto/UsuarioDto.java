@@ -1,7 +1,6 @@
 package br.com.victorreis.crud.controller.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 import br.com.victorreis.crud.model.Usuario;
 
@@ -30,8 +29,8 @@ public class UsuarioDto {
 	}
 	
 	
-	public static List<UsuarioDto> converter(List<Usuario> usuarios) {
-		return usuarios.stream().map(UsuarioDto::new).collect(Collectors.toList());
+	public static Page<UsuarioDto> converter(Page<Usuario> usuarios) {
+		return usuarios.map(UsuarioDto::new);
 	}
 	
 	
